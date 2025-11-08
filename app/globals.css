@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Playfair Display', serif;
+  --font-heading: 'DM Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+body {
+  background-color: white;
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+@layer components {
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20;
+  }
+
+  .glass-dark {
+    @apply bg-gray-900/70 backdrop-blur-xl border border-white/10;
+  }
+
+  /* Premium card styles */
+  .card-premium {
+    @apply bg-white rounded-3xl shadow-float p-8 transition-all duration-300 hover:shadow-float-lg hover:-translate-y-1;
+  }
+
+  .card-float {
+    @apply bg-white rounded-2xl shadow-soft p-6 transition-all duration-300 hover:shadow-soft-lg;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 via-primary-500 to-secondary-500;
+  }
+
+  .text-gradient-hero {
+    @apply bg-clip-text text-transparent bg-gradient-hero;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    @apply bg-gradient-primary text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-soft hover:shadow-glow-purple transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-gray-900 px-8 py-4 rounded-2xl font-semibold text-lg shadow-soft hover:shadow-soft-lg border border-gray-100 transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-ghost {
+    @apply text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-50 transition-all duration-200;
+  }
+
+  /* Input styles */
+  .input-premium {
+    @apply w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-primary-400 focus:ring-4 focus:ring-primary-100 transition-all duration-200 outline-none bg-white;
+  }
+
+  /* Floating search bar */
+  .search-float {
+    @apply glass rounded-full px-8 py-4 shadow-float flex items-center gap-4 max-w-3xl mx-auto;
+  }
+
+  /* Hero section gradient overlay */
+  .hero-overlay {
+    @apply absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/20 to-purple-900/60;
+  }
+
+  /* Scroll animations */
+  .animate-on-scroll {
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+  }
+
+  .animate-on-scroll.visible {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Destination card hover effect */
+  .destination-card {
+    @apply relative overflow-hidden rounded-3xl shadow-soft transition-all duration-500 hover:shadow-float-lg;
+  }
+
+  .destination-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 transition-opacity duration-300 z-10;
+  }
+
+  .destination-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    @apply h-2 bg-gradient-primary rounded-full transition-all duration-500;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-4 py-2 bg-gray-900 text-white text-sm rounded-xl opacity-0 pointer-events-none transition-opacity duration-200 whitespace-nowrap;
+  }
+
+  .tooltip-trigger:hover .tooltip {
+    @apply opacity-100;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-50;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection */
+::selection {
+  @apply bg-primary-200 text-primary-900;
+}
