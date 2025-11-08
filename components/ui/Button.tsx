@@ -8,7 +8,7 @@ interface ButtonProps {
   children: ReactNode
   variant?: 'primary' | 'secondary' | 'ghost' | 'gradient'
   size?: 'sm' | 'md' | 'lg' | 'xl'
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   disabled?: boolean
   className?: string
   icon?: ReactNode

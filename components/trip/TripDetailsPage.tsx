@@ -407,7 +407,14 @@ export default function TripDetailsPage({
   )
 }
 
-function CollapsibleSection({ title, icon, expanded, onToggle, children, delay }: any) {
+function CollapsibleSection({ title, icon, expanded, onToggle, children, delay }: {
+  title: string
+  icon: any
+  expanded: boolean
+  onToggle: () => void
+  children: React.ReactNode
+  delay: number
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -442,7 +449,11 @@ function CollapsibleSection({ title, icon, expanded, onToggle, children, delay }
   )
 }
 
-function InfoBox({ label, value, icon }: any) {
+function InfoBox({ label, value, icon }: {
+  label: string
+  value: string
+  icon: any
+}) {
   return (
     <div className="bg-gray-50 p-4 rounded-xl">
       <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
@@ -473,7 +484,12 @@ function DayPreview({ day }: { day: number }) {
   )
 }
 
-function DocumentItem({ name, type, size, status }: any) {
+function DocumentItem({ name, type, size, status }: {
+  name: string
+  type: string
+  size: string
+  status: string
+}) {
   return (
     <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
       <div className="bg-white p-2 rounded-lg">
@@ -490,7 +506,12 @@ function DocumentItem({ name, type, size, status }: any) {
   )
 }
 
-function StatusItem({ icon, label, status, color }: any) {
+function StatusItem({ icon, label, status, color }: {
+  icon: any
+  label: string
+  status: string
+  color: 'green' | 'yellow' | 'red'
+}) {
   const colors = {
     green: 'text-green-700',
     yellow: 'text-yellow-700',
@@ -508,7 +529,11 @@ function StatusItem({ icon, label, status, color }: any) {
   )
 }
 
-function ContactItem({ icon, label, value }: any) {
+function ContactItem({ icon, label, value }: {
+  icon: any
+  label: string
+  value: string
+}) {
   return (
     <div className="flex items-center gap-3">
       <div className="bg-white p-2 rounded-lg">
@@ -522,7 +547,11 @@ function ContactItem({ icon, label, value }: any) {
   )
 }
 
-function CancelTripModal({ isOpen, onClose, onConfirm }: any) {
+function CancelTripModal({ isOpen, onClose, onConfirm }: {
+  isOpen: boolean
+  onClose: () => void
+  onConfirm: () => void
+}) {
   return (
     <AnimatePresence>
       {isOpen && (
