@@ -561,7 +561,12 @@ export default function AdvancedFiltersScreen({
   )
 }
 
-function TabButton({ active, onClick, icon, label }: any) {
+function TabButton({ active, onClick, icon, label }: {
+  active: boolean
+  onClick: () => void
+  icon: any
+  label: string
+}) {
   return (
     <button
       onClick={onClick}
@@ -577,7 +582,11 @@ function TabButton({ active, onClick, icon, label }: any) {
   )
 }
 
-function FilterSection({ title, icon: Icon, children }: any) {
+function FilterSection({ title, icon: Icon, children }: {
+  title: string
+  icon: any
+  children: React.ReactNode
+}) {
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
@@ -589,7 +598,13 @@ function FilterSection({ title, icon: Icon, children }: any) {
   )
 }
 
-function CheckboxCard({ checked, onChange, label, sublabel, icon }: any) {
+function CheckboxCard({ checked, onChange, label, sublabel, icon }: {
+  checked: boolean
+  onChange: () => void
+  label: string
+  sublabel?: string
+  icon?: any
+}) {
   return (
     <label
       className={`flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all ${
@@ -615,7 +630,11 @@ function CheckboxCard({ checked, onChange, label, sublabel, icon }: any) {
   )
 }
 
-function CheckboxItem({ checked, onChange, label }: any) {
+function CheckboxItem({ checked, onChange, label }: {
+  checked: boolean
+  onChange: () => void
+  label: string
+}) {
   return (
     <label className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
       <input
@@ -629,7 +648,11 @@ function CheckboxItem({ checked, onChange, label }: any) {
   )
 }
 
-function RadioCard({ checked, onChange, label }: any) {
+function RadioCard({ checked, onChange, label }: {
+  checked: boolean
+  onChange: () => void
+  label: string
+}) {
   return (
     <label
       className={`flex items-center justify-center p-4 rounded-xl cursor-pointer transition-all ${
@@ -649,7 +672,12 @@ function RadioCard({ checked, onChange, label }: any) {
   )
 }
 
-function BudgetSlider({ label, value, onChange, color }: any) {
+function BudgetSlider({ label, value, onChange, color }: {
+  label: string
+  value: number
+  onChange: (value: number) => void
+  color: 'blue' | 'purple' | 'green'
+}) {
   const colors = {
     blue: { bg: 'from-blue-400 to-blue-500', text: 'text-blue-600' },
     purple: { bg: 'from-purple-400 to-purple-500', text: 'text-purple-600' },
