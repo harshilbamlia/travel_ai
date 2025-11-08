@@ -324,7 +324,11 @@ export default function BookingConfirmation({
   )
 }
 
-function SummaryItem({ icon, label, value }: any) {
+function SummaryItem({ icon, label, value }: {
+  icon: any
+  label: string
+  value: string
+}) {
   return (
     <div className="flex items-center gap-3">
       <div className="bg-gradient-to-br from-primary-100 to-secondary-100 p-3 rounded-xl">
@@ -338,7 +342,12 @@ function SummaryItem({ icon, label, value }: any) {
   )
 }
 
-function QuickInfoCard({ icon, title, description, color }: any) {
+function QuickInfoCard({ icon, title, description, color }: {
+  icon: any
+  title: string
+  description: string
+  color: 'blue' | 'purple'
+}) {
   const colors = {
     blue: 'from-blue-50 to-blue-100 border-blue-200',
     purple: 'from-purple-50 to-purple-100 border-purple-200',
@@ -357,7 +366,13 @@ function QuickInfoCard({ icon, title, description, color }: any) {
   )
 }
 
-function NextStepItem({ number, icon, title, description, color }: any) {
+function NextStepItem({ number, icon, title, description, color }: {
+  number: number
+  icon: any
+  title: string
+  description: string
+  color: 'green' | 'blue' | 'purple'
+}) {
   const colors = {
     green: 'from-green-400 to-emerald-500',
     blue: 'from-blue-400 to-cyan-500',
