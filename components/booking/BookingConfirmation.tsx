@@ -284,7 +284,7 @@ export default function BookingConfirmation({
           transition={{ delay: 1.2 }}
           className="mt-12 text-center"
         >
-          <Card variant="floating" className="bg-gradient-to-r from-gray-50 to-gray-100">
+          <Card variant="float" className="bg-gradient-to-r from-gray-50 to-gray-100">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-gray-600">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center">
