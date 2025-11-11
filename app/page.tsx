@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import WelcomeSplitChoice from '@/components/onboarding/WelcomeSplitChoice'
 import SmartDestinationSearch from '@/components/onboarding/SmartDestinationSearch'
 import DateBudgetSelector from '@/components/onboarding/DateBudgetSelector'
@@ -13,42 +12,18 @@ import BookingSummary from '@/components/booking/BookingSummary'
 import BookingConfirmation from '@/components/booking/BookingConfirmation'
 import TripDetailsPage from '@/components/trip/TripDetailsPage'
 import HomeDashboard from '@/components/dashboard/HomeDashboard'
-
-type Screen =
-  | 'welcome'
-  | 'search'
-  | 'date-budget'
-  | 'trip-options'
-  | 'itinerary'
-  | 'booking'
-  | 'booking-confirmation'
-  | 'trip-details'
-  | 'questionnaire'
-  | 'swipe-cards'
-  | 'dashboard'
-
-type FlowPath = 'i-know' | 'inspire-me' | null
-
-interface TripData {
-  destination?: string
-  dates?: string
-  budget?: number
-  travelers?: number
-  selectedPlanId?: string
-  bookingReference?: string
-  preferences?: {
-    vibe: string
-    timing: string
-    budget: number
-  }
-  likedDestinations?: any[]
-}
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks'
+import { setCurrentScreen, setFlowPath, resetNavigation } from '@/lib/store/slices/navigationSlice'
+import { setDestination, setDateBudgetData, setSelectedPlanId, setPreferences, setLikedDestinations, setBookingReference, resetTrip } from '@/lib/store/slices/tripSlice'
+import { setShowFilters } from '@/lib/store/slices/uiSlice'
+import { setCurrentBooking, addToBookingHistory } from '@/lib/store/slices/bookingSlice'
 
 export default function Home() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('welcome')
-  const [flowPath, setFlowPath] = useState<FlowPath>(null)
-  const [tripData, setTripData] = useState<TripData>({})
-  const [showFilters, setShowFilters] = useState(false)
+  const dispatch = useAppDispatch()
+  const currentScreen = useAppSelector((state) => state.navigation.currentScreen)
+  const flowPath = useAppSelector((state) => state.navigation.flowPath)
+  const tripData = useAppSelector((state) => state.trip)
+  const showFilters = useAppSelector((state) => state.ui.showFilters)
 
   // Sample trip plan data (would come from API in real app)
   const getTripPlan = () => {
@@ -82,47 +57,47 @@ export default function Home() {
 
   // Welcome screen handlers
   const handleIKnow = () => {
-    setFlowPath('i-know')
-    setCurrentScreen('search')
+    dispatch(setFlowPath('i-know'))
+    dispatch(setCurrentScreen('search'))
   }
 
   const handleInspireMe = () => {
-    setFlowPath('inspire-me')
-    setCurrentScreen('questionnaire')
+    dispatch(setFlowPath('inspire-me'))
+    dispatch(setCurrentScreen('questionnaire'))
   }
 
   // "I Know" flow handlers
   const handleDestinationSelect = (destination: string) => {
-    setTripData({ ...tripData, destination })
-    setCurrentScreen('date-budget')
+    dispatch(setDestination(destination))
+    dispatch(setCurrentScreen('date-budget'))
   }
 
   const handleDateBudgetContinue = (data: { dates: string; budget: number; travelers: number }) => {
-    setTripData({ ...tripData, ...data })
-    setCurrentScreen('trip-options')
+    dispatch(setDateBudgetData(data))
+    dispatch(setCurrentScreen('trip-options'))
   }
 
   const handleBackToSearch = () => {
-    setCurrentScreen('search')
+    dispatch(setCurrentScreen('search'))
   }
 
   const handleBackToDateBudget = () => {
-    setCurrentScreen('date-budget')
+    dispatch(setCurrentScreen('date-budget'))
   }
 
   const handleInspireInstead = () => {
-    setFlowPath('inspire-me')
-    setCurrentScreen('questionnaire')
+    dispatch(setFlowPath('inspire-me'))
+    dispatch(setCurrentScreen('questionnaire'))
   }
 
   // Trip options handlers
   const handleSelectTripOption = (optionId: string) => {
-    setTripData({ ...tripData, selectedPlanId: optionId })
-    setCurrentScreen('itinerary')
+    dispatch(setSelectedPlanId(optionId))
+    dispatch(setCurrentScreen('itinerary'))
   }
 
   const handleOpenFilters = () => {
-    setShowFilters(true)
+    dispatch(setShowFilters(true))
   }
 
   const handleApplyFilters = (filters: any) => {
@@ -131,54 +106,67 @@ export default function Home() {
   }
 
   const handleBackToOptions = () => {
-    setCurrentScreen('trip-options')
+    dispatch(setCurrentScreen('trip-options'))
   }
 
   // Itinerary handlers
   const handleBookTrip = () => {
-    setCurrentScreen('booking')
+    dispatch(setCurrentScreen('booking'))
   }
 
   const handleBackToItinerary = () => {
-    setCurrentScreen('itinerary')
+    dispatch(setCurrentScreen('itinerary'))
   }
 
   // Booking handlers
   const handleCompleteBooking = () => {
     // Generate booking reference
     const bookingRef = `TR${Math.random().toString(36).substring(2, 10).toUpperCase()}`
-    setTripData({ ...tripData, bookingReference: bookingRef })
-    setCurrentScreen('booking-confirmation')
+
+    // Create booking object
+    const booking = {
+      bookingReference: bookingRef,
+      destination: tripData.destination || 'Your Destination',
+      dates: tripData.dates || 'Dec 15 - Dec 22, 2024',
+      travelers: tripData.travelers,
+      totalPrice: getTripPlan().totalPrice,
+      status: 'confirmed' as const,
+      createdAt: new Date().toISOString(),
+    }
+
+    dispatch(setBookingReference(bookingRef))
+    dispatch(setCurrentBooking(booking))
+    dispatch(addToBookingHistory(booking))
+    dispatch(setCurrentScreen('booking-confirmation'))
   }
 
   // Booking confirmation handlers
   const handleViewTripDetails = () => {
-    setCurrentScreen('trip-details')
+    dispatch(setCurrentScreen('trip-details'))
   }
 
   const handleBackToDashboard = () => {
-    setCurrentScreen('dashboard')
+    dispatch(setCurrentScreen('dashboard'))
   }
 
   // "Inspire Me" flow handlers
   const handleQuestionnaireComplete = (preferences: { vibe: string; timing: string; budget: number }) => {
-    setTripData({ ...tripData, preferences })
-    setCurrentScreen('swipe-cards')
+    dispatch(setPreferences(preferences))
+    dispatch(setCurrentScreen('swipe-cards'))
   }
 
   const handleBackToWelcome = () => {
-    setCurrentScreen('welcome')
-    setFlowPath(null)
-    setTripData({})
+    dispatch(resetNavigation())
+    dispatch(resetTrip())
   }
 
   const handleSwipeComplete = (likedDestinations: any[]) => {
-    setTripData({ ...tripData, likedDestinations })
-    setCurrentScreen('dashboard')
+    dispatch(setLikedDestinations(likedDestinations))
+    dispatch(setCurrentScreen('dashboard'))
   }
 
   const handleBackToQuestionnaire = () => {
-    setCurrentScreen('questionnaire')
+    dispatch(setCurrentScreen('questionnaire'))
   }
 
   return (
@@ -186,7 +174,7 @@ export default function Home() {
       {/* Advanced Filters Overlay */}
       <AdvancedFiltersScreen
         isOpen={showFilters}
-        onClose={() => setShowFilters(false)}
+        onClose={() => dispatch(setShowFilters(false))}
         onApply={handleApplyFilters}
       />
 
@@ -246,7 +234,7 @@ export default function Home() {
           bookingReference={tripData.bookingReference}
           destination={tripData.destination || 'Your Destination'}
           dates={tripData.dates || 'Dec 15 - Dec 22, 2024'}
-          travelers={tripData.travelers || 2}
+          travelers={tripData.travelers}
           totalPrice={getTripPlan().totalPrice}
           email="user@example.com"
           onViewTripDetails={handleViewTripDetails}
@@ -259,7 +247,7 @@ export default function Home() {
           bookingReference={tripData.bookingReference}
           destination={tripData.destination || 'Your Destination'}
           dates={tripData.dates || 'Dec 15 - Dec 22, 2024'}
-          travelers={tripData.travelers || 2}
+          travelers={tripData.travelers}
           totalPrice={getTripPlan().totalPrice}
           trip={getTripPlan()}
           onBack={handleBackToDashboard}
