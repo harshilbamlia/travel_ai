@@ -4,10 +4,20 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Plane, User, Bell, Heart, Settings } from 'lucide-react'
 import Button from '../ui/Button'
+import { useAppDispatch } from '@/lib/store/hooks'
+import { resetNavigation } from '@/lib/store/slices/navigationSlice'
+import { resetTrip } from '@/lib/store/slices/tripSlice'
 
 export default function Navbar() {
+  const dispatch = useAppDispatch()
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const handleLogoClick = () => {
+    dispatch(resetNavigation())
+    dispatch(resetTrip())
+    setMobileMenuOpen(false)
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +41,7 @@ export default function Navbar() {
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
+            onClick={handleLogoClick}
             className="flex items-center gap-2 cursor-pointer"
           >
             <div className="bg-gradient-primary p-2 rounded-xl">
